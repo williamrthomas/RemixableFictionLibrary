@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Import from Project Gutenberg | Remixable Fiction Library{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="mb-4">Import from Project Gutenberg</h1>
+            
+            <div class="alert alert-info">
+                <h5 class="alert-heading">Admin Import Tool</h5>
+                <p>This is an administrative tool for directly importing books from Project Gutenberg. All imported books must be in the US public domain (generally published before 1929).</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Project Gutenberg Import Form</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('main.import_project_gutenberg') }}">
+                        <div class="mb-3">
+                            <label for="book_id" class="form-label">Project Gutenberg Book ID</label>
+                            <input type="text" class="form-control" id="book_id" name="book_id" required>
+                            <div class="form-text">
+                                Enter the numeric ID of the book on Project Gutenberg, e.g., "1342" for Pride and Prejudice
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Import Book</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">How to Find the Book ID</h3>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li>Visit <a href="https://www.gutenberg.org" target="_blank">Project Gutenberg</a></li>
+                        <li>Find the book you want to import</li>
+                        <li>Click on the book to go to its detail page</li>
+                        <li>Look at the URL in your browser's address bar</li>
+                        <li>The URL will look like: <code>https://www.gutenberg.org/ebooks/1342</code></li>
+                        <li>The number after "/ebooks/" is the Book ID: <code>1342</code></li>
+                    </ol>
+                    
+                    <div class="alert alert-warning mt-3">
+                        <h5 class="alert-heading">Important Notes</h5>
+                        <ul class="mb-0">
+                            <li>Only import books that are in the US public domain (generally published before 1929)</li>
+                            <li>Project Gutenberg branding will be automatically removed during import</li>
+                            <li>The system will attempt to download EPUB format first, then fall back to text format if EPUB is not available</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 d-flex gap-2">
+                <a href="{{ url_for('main.import_page') }}" class="btn btn-outline-secondary">Back to Import Options</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

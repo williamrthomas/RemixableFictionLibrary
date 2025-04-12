@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Reading: {{ book.title }} | Remixable Fiction Library{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    
+    .book-reader {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .book-content {
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+    
+    .book-content h1, .book-content h2, .book-content h3 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .book-content p {
+        text-indent: 1.5em;
+        margin-bottom: 0.5em;
+    }
+    
+    .reading-controls {
+        position: sticky;
+        top: 0;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 1rem 0;
+        margin-bottom: 2rem;
+        z-index: 100;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .font-size-controls {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        padding: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="reading-controls">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left"></i> Back to Book Details
+                </a>
+            </div>
+            <div class="text-center">
+                <h5 class="mb-0">{{ book.title }}</h5>
+                <small class="text-muted">by {{ book.author }}</small>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="downloadDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-download"></i> Download
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="downloadDropdown">
+                    {% if book.epub_file_path %}
+                        <li><a class="dropdown-item" href="{{ url_for('main.download_book', book_id=book.id, format='epub') }}">EPUB</a></li>
+                    {% endif %}
+                    {% if book.text_file_path %}
+                        <li><a class="dropdown-item" href="{{ url_for('main.download_book', book_id=book.id, format='text') }}">Plain Text</a></li>
+                    {% endif %}
+                    {% if book.html_file_path %}
+                        <li><a class="dropdown-item" href="{{ url_for('main.download_book', book_id=book.id, format='html') }}">HTML</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="book-reader">
+        <div class="book-content">
+            {{ content|safe }}
+        </div>
+        
+        <div class="mt-5 pt-4 border-top">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left"></i> Back to Book Details
+                    </a>
+                </div>
+                <div class="text-center">
+                    <p class="mb-0 text-muted">
+                        <small>
+                            Source: <a href="{{ book.source_url }}" target="_blank">{{ book.source_url }}</a><br>
+                            License: {{ book.license.name }}
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="font-size-controls">
+    <button id="decrease-font" class="btn btn-sm btn-outline-secondary" title="Decrease font size">
+        <i class="bi bi-dash"></i>
+    </button>
+    <button id="reset-font" class="btn btn-sm btn-outline-secondary" title="Reset font size">
+        <i class="bi bi-arrow-repeat"></i>
+    </button>
+    <button id="increase-font" class="btn btn-sm btn-outline-secondary" title="Increase font size">
+        <i class="bi bi-plus"></i>
+    </button>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Book reader font size controls
+        const bookContent = document.querySelector('.book-content');
+        const increaseFontBtn = document.getElementById('increase-font');
+        const decreaseFontBtn = document.getElementById('decrease-font');
+        const resetFontBtn = document.getElementById('reset-font');
+
+        // Get current font size
+        let currentFontSize = parseFloat(window.getComputedStyle(bookContent).fontSize);
+        const defaultFontSize = currentFontSize;
+
+        // Increase font size
+        increaseFontBtn.addEventListener('click', function() {
+            currentFontSize += 2;
+            bookContent.style.fontSize = currentFontSize + 'px';
+            saveReaderPreferences();
+        });
+
+        // Decrease font size
+        decreaseFontBtn.addEventListener('click', function() {
+            if (currentFontSize > 10) {
+                currentFontSize -= 2;
+                bookContent.style.fontSize = currentFontSize + 'px';
+                saveReaderPreferences();
+            }
+        });
+
+        // Reset font size
+        resetFontBtn.addEventListener('click', function() {
+            currentFontSize = defaultFontSize;
+            bookContent.style.fontSize = defaultFontSize + 'px';
+            saveReaderPreferences();
+        });
+
+        // Load saved preferences
+        loadReaderPreferences();
+
+        function saveReaderPreferences() {
+            localStorage.setItem('readerFontSize', currentFontSize);
+        }
+
+        function loadReaderPreferences() {
+            const savedFontSize = localStorage.getItem('readerFontSize');
+            if (savedFontSize) {
+                currentFontSize = parseFloat(savedFontSize);
+                bookContent.style.fontSize = currentFontSize + 'px';
+            }
+        }
+    });
+</script>
+{% endblock %}

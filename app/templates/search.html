@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results | Remixable Fiction Library{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Search Results</h1>
+
+<div class="row mb-4">
+    <div class="col-md-8 mx-auto">
+        <form action="{{ url_for('main.search') }}" method="get" class="d-flex">
+            <input class="form-control me-2" type="search" name="q" placeholder="Search books..." value="{{ query }}" aria-label="Search">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+    </div>
+</div>
+
+{% if query %}
+    <div class="alert alert-info">
+        <h5 class="mb-0">Showing results for: <strong>{{ query }}</strong></h5>
+    </div>
+    
+    {% if books %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for book in books %}
+                <div class="col">
+                    <div class="card h-100">
+                        {% if book.cover_image_path %}
+                            <img src="{{ book.cover_image_path }}" class="card-img-top" alt="{{ book.title }}">
+                        {% else %}
+                            <div class="card-img-top bg-light text-center py-5">
+                                <i class="bi bi-book" style="font-size: 3rem;"></i>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ book.author }}</h6>
+                            
+                            <div class="mb-2">
+                                <span class="badge bg-primary">
+                                    {% if book.source == 'standard_ebooks' %}
+                                        Standard Ebooks
+                                    {% elif book.source == 'project_gutenberg' %}
+                                        Project Gutenberg
+                                    {% elif book.source == 'internet_archive' %}
+                                        Internet Archive
+                                    {% elif book.source == 'wikisource' %}
+                                        Wikisource
+                                    {% else %}
+                                        {{ book.source }}
+                                    {% endif %}
+                                </span>
+                                
+                                <span class="badge bg-secondary">{{ book.license.short_name }}</span>
+                                
+                                {% if book.verified %}
+                                    <span class="badge bg-success">Verified</span>
+                                {% endif %}
+                            </div>
+                            
+                            {% if book.description %}
+                                <p class="card-text">{{ book.description|truncate(100) }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="btn btn-primary">View Details</a>
+                            <a href="{{ url_for('main.read_book', book_id=book.id) }}" class="btn btn-outline-secondary">Read</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            <h4 class="alert-heading">No results found!</h4>
+            <p>No books match your search query. Try using different keywords or <a href="{{ url_for('main.browse') }}" class="alert-link">browse all books</a>.</p>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="alert alert-info">
+        <h4 class="alert-heading">Enter a search query</h4>
+        <p>Use the search box above to find books by title, author, or description.</p>
+    </div>
+{% endif %}
+
+<div class="text-center mt-4">
+    <a href="{{ url_for('main.browse') }}" class="btn btn-outline-primary">Browse All Books</a>
+</div>
+{% endblock %}

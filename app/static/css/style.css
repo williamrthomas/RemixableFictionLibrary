@@ -1,0 +1,284 @@
+/* Main Styles for Remixable Fiction Library */
+
+/* Custom Variables */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2c3e50;
+  --accent-color: #e74c3c;
+  --light-color: #ecf0f1;
+  --dark-color: #2c3e50;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --danger-color: #e74c3c;
+  --info-color: #3498db;
+}
+
+/* Global Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #217dbb;
+  text-decoration: underline;
+}
+
+/* Header & Navigation */
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: #fff;
+}
+
+/* Book Cards */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Book Detail Page */
+.book-cover {
+  max-height: 500px;
+  width: auto;
+}
+
+/* Read Page */
+.book-content {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.book-content p {
+  margin-bottom: 1.5rem;
+}
+
+.book-content h1, .book-content h2, .book-content h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* License Badges */
+.license-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.license-pd {
+  background-color: #e3f2fd;
+  color: #0d47a1;
+}
+
+.license-cc0 {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+}
+
+.license-cc-by {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.license-cc-by-sa {
+  background-color: #ffebee;
+  color: #b71c1c;
+}
+
+/* Source Badges */
+.source-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.source-standard-ebooks {
+  background-color: #bbdefb;
+  color: #0d47a1;
+}
+
+.source-project-gutenberg {
+  background-color: #c8e6c9;
+  color: #1b5e20;
+}
+
+.source-internet-archive {
+  background-color: #fff9c4;
+  color: #f57f17;
+}
+
+.source-wikisource {
+  background-color: #f8bbd0;
+  color: #880e4f;
+}
+
+/* Footer */
+footer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background-color: var(--light-color);
+}
+
+footer a {
+  color: var(--dark-color);
+}
+
+footer a:hover {
+  color: var(--primary-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .jumbotron {
+    padding: 2rem 1rem;
+  }
+  
+  .card-img-top {
+    height: 160px;
+  }
+}
+
+/* Reading Mode */
+.reading-mode {
+  background-color: #f8f9fa;
+}
+
+.reading-mode .container {
+  max-width: 800px;
+}
+
+.reading-controls {
+  position: sticky;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  z-index: 100;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Import Forms */
+.import-source-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.import-source-card:hover {
+  border-color: var(--primary-color);
+}
+
+.import-source-card.selected {
+  border-color: var(--primary-color);
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+/* Authentication Forms */
+.auth-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  background-color: #fff;
+}
+
+.auth-form .form-control {
+  margin-bottom: 1rem;
+}
+
+/* Utilities */
+.text-small {
+  font-size: 0.875rem;
+}
+
+.bg-light-hover:hover {
+  background-color: #f8f9fa;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Attribution Box */
+.attribution-box {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: monospace;
+}
+
+/* Book Reader */
+.book-reader {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.book-reader h1, .book-reader h2, .book-reader h3 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.book-reader p {
+  text-indent: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.book-reader .chapter {
+  margin-top: 3rem;
+}
+
+/* Font size controls */
+.font-size-controls {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.font-size-controls button {
+  margin: 0 0.25rem;
+}

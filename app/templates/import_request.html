@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Request Book Import | Remixable Fiction Library{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="mb-4">Request a Book Import</h1>
+            
+            <div class="alert alert-info">
+                <h5 class="alert-heading">Open Import System</h5>
+                <p>Anyone can request books to be added to our library. Once submitted, your request will be reviewed by our team, and if approved, the book will be imported into the library.</p>
+                <p class="mb-0">Please ensure that the book you're requesting is in the public domain or has a license that permits remixing.</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Book Import Request Form</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('main.import_request') }}">
+                        <div class="mb-3">
+                            <label for="source" class="form-label">Source</label>
+                            <select class="form-select" id="source" name="source" required>
+                                <option value="" selected disabled>Select a source</option>
+                                <option value="standard_ebooks">Standard Ebooks</option>
+                                <option value="project_gutenberg">Project Gutenberg</option>
+                                <option value="internet_archive">Internet Archive</option>
+                                <option value="wikisource">Wikisource</option>
+                                <option value="other">Other (specify in notes)</option>
+                            </select>
+                            <div class="form-text">Where is this book available from?</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="identifier" class="form-label">Source Identifier</label>
+                            <input type="text" class="form-control" id="identifier" name="identifier" required>
+                            <div class="form-text">
+                                <ul class="mb-0">
+                                    <li>For Standard Ebooks: URL path (e.g., "jane-austen/pride-and-prejudice")</li>
+                                    <li>For Project Gutenberg: Book ID (e.g., "1342" for Pride and Prejudice)</li>
+                                    <li>For Internet Archive: Item identifier (e.g., "prideandprejudic00aust")</li>
+                                    <li>For Wikisource: Page name (e.g., "Pride_and_Prejudice")</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Book Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="author" class="form-label">Author</label>
+                            <input type="text" class="form-control" id="author" name="author" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Additional Notes</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                            <div class="form-text">Any additional information about the book, its license status, or why you think it should be included.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email (Optional)</label>
+                            <input type="email" class="form-control" id="email" name="email">
+                            <div class="form-text">If provided, we'll notify you when your request is processed.</div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <a href="{{ url_for('main.import_list') }}" class="btn btn-outline-secondary">View All Import Requests</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

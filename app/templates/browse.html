@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Books | Remixable Fiction Library{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Browse Books</h1>
+
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Filters</h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('main.browse') }}" method="get">
+                    <div class="mb-3">
+                        <label for="source" class="form-label">Source</label>
+                        <select class="form-select" id="source" name="source">
+                            <option value="">All Sources</option>
+                            {% for source in sources %}
+                                <option value="{{ source[0] }}" {% if current_source == source[0] %}selected{% endif %}>
+                                    {% if source[0] == 'standard_ebooks' %}
+                                        Standard Ebooks
+                                    {% elif source[0] == 'project_gutenberg' %}
+                                        Project Gutenberg
+                                    {% elif source[0] == 'internet_archive' %}
+                                        Internet Archive
+                                    {% elif source[0] == 'wikisource' %}
+                                        Wikisource
+                                    {% else %}
+                                        {{ source[0] }}
+                                    {% endif %}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="license" class="form-label">License</label>
+                        <select class="form-select" id="license" name="license">
+                            <option value="">All Licenses</option>
+                            {% for license in licenses %}
+                                <option value="{{ license.short_name }}" {% if current_license == license.short_name %}selected{% endif %}>
+                                    {{ license.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="genre" class="form-label">Genre</label>
+                        <select class="form-select" id="genre" name="genre">
+                            <option value="">All Genres</option>
+                            {% for genre in genres %}
+                                <option value="{{ genre.name }}" {% if current_genre == genre.name %}selected{% endif %}>
+                                    {{ genre.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    </div>
+                </form>
+                
+                {% if current_source or current_license or current_genre %}
+                    <div class="d-grid mt-2">
+                        <a href="{{ url_for('main.browse') }}" class="btn btn-outline-secondary">Clear Filters</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">License Guide</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                <div class="list-group-item">
+                    <h6 class="mb-1">Public Domain (US)</h6>
+                    <p class="mb-0 small">No restrictions in the US</p>
+                </div>
+                <div class="list-group-item">
+                    <h6 class="mb-1">CC0</h6>
+                    <p class="mb-0 small">No restrictions worldwide</p>
+                </div>
+                <div class="list-group-item">
+                    <h6 class="mb-1">CC BY</h6>
+                    <p class="mb-0 small">Attribution required</p>
+                </div>
+                <div class="list-group-item">
+                    <h6 class="mb-1">CC BY-SA</h6>
+                    <p class="mb-0 small">Attribution + ShareAlike</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        {% if books.items %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for book in books.items %}
+                    <div class="col">
+                        <div class="card h-100">
+                            {% if book.cover_image_path %}
+                                <img src="{{ book.cover_image_path }}" class="card-img-top" alt="{{ book.title }}">
+                            {% else %}
+                                <div class="card-img-top bg-light text-center py-5">
+                                    <i class="bi bi-book" style="font-size: 3rem;"></i>
+                                </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ book.title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ book.author }}</h6>
+                                
+                                <div class="mb-2">
+                                    <span class="badge bg-primary">
+                                        {% if book.source == 'standard_ebooks' %}
+                                            Standard Ebooks
+                                        {% elif book.source == 'project_gutenberg' %}
+                                            Project Gutenberg
+                                        {% elif book.source == 'internet_archive' %}
+                                            Internet Archive
+                                        {% elif book.source == 'wikisource' %}
+                                            Wikisource
+                                        {% else %}
+                                            {{ book.source }}
+                                        {% endif %}
+                                    </span>
+                                    
+                                    <span class="badge bg-secondary">{{ book.license.short_name }}</span>
+                                    
+                                    {% if book.verified %}
+                                        <span class="badge bg-success">Verified</span>
+                                    {% endif %}
+                                </div>
+                                
+                                {% if book.description %}
+                                    <p class="card-text">{{ book.description|truncate(100) }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer">
+                                <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="btn btn-primary">View Details</a>
+                                <a href="{{ url_for('main.read_book', book_id=book.id) }}" class="btn btn-outline-secondary">Read</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if books.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('main.browse', page=books.prev_num, source=current_source, license=current_license, genre=current_genre) }}">Previous</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                    {% endif %}
+                    
+                    {% for page_num in books.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                        {% if page_num %}
+                            {% if page_num == books.page %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ page_num }}</span>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ url_for('main.browse', page=page_num, source=current_source, license=current_license, genre=current_genre) }}">{{ page_num }}</a>
+                                </li>
+                            {% endif %}
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if books.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('main.browse', page=books.next_num, source=current_source, license=current_license, genre=current_genre) }}">Next</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% else %}
+            <div class="alert alert-info">
+                <h4 class="alert-heading">No books found!</h4>
+                <p>No books match your selected filters. Try adjusting your criteria or <a href="{{ url_for('main.browse') }}" class="alert-link">clear all filters</a>.</p>
+                
+                {% if current_user.is_authenticated and current_user.is_editor() %}
+                    <hr>
+                    <p class="mb-0">As an editor, you can <a href="{{ url_for('main.import_page') }}" class="alert-link">import new books</a> to the library.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

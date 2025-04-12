@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Import Requests | Remixable Fiction Library{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Community Import Requests</h1>
+    
+    <div class="alert alert-info mb-4">
+        <h5 class="alert-heading">Open Import System</h5>
+        <p>Our library grows through community contributions. Anyone can request books to be added to our collection, and all requests are publicly visible to promote transparency.</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <a href="{{ url_for('main.import_request') }}" class="btn btn-primary">Submit New Request</a>
+        </div>
+    </div>
+    
+    {% if requests %}
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">All Import Requests</h3>
+                <span class="badge bg-primary rounded-pill">{{ requests|length }} Requests</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Source</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in requests|sort(attribute='created_at', reverse=True) %}
+                            <tr>
+                                <td>{{ request.id[:8] }}</td>
+                                <td>{{ request.title }}</td>
+                                <td>{{ request.author }}</td>
+                                <td>
+                                    {% if request.source == 'standard_ebooks' %}
+                                        Standard Ebooks
+                                    {% elif request.source == 'project_gutenberg' %}
+                                        Project Gutenberg
+                                    {% elif request.source == 'internet_archive' %}
+                                        Internet Archive
+                                    {% elif request.source == 'wikisource' %}
+                                        Wikisource
+                                    {% else %}
+                                        {{ request.source }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ request.created_at.strftime('%Y-%m-%d') }}</td>
+                                <td>
+                                    {% if request.status == 'pending' %}
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    {% elif request.status == 'approved' %}
+                                        <span class="badge bg-success">Approved</span>
+                                    {% elif request.status == 'rejected' %}
+                                        <span class="badge bg-danger">Rejected</span>
+                                    {% elif request.status == 'imported' %}
+                                        <span class="badge bg-primary">Imported</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ request.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('main.import_status', request_id=request.id) }}" class="btn btn-sm btn-outline-primary">Details</a>
+                                    {% if request.status == 'imported' and request.book_id %}
+                                        <a href="{{ url_for('main.book_detail', book_id=request.book_id) }}" class="btn btn-sm btn-outline-success">View Book</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            <h5 class="alert-heading">No Import Requests Yet</h5>
+            <p>Be the first to request a book to be added to our library!</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <a href="{{ url_for('main.import_request') }}" class="btn btn-primary">Submit New Request</a>
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="card">
+        <div class="card-header">
+            <h3 class="mb-0">How It Works</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 text-center mb-3 mb-md-0">
+                    <div class="display-4 text-primary mb-2">
+                        <i class="bi bi-1-circle"></i>
+                    </div>
+                    <h5>Submit Request</h5>
+                    <p class="text-muted">Anyone can request a book to be added to the library.</p>
+                </div>
+                <div class="col-md-3 text-center mb-3 mb-md-0">
+                    <div class="display-4 text-primary mb-2">
+                        <i class="bi bi-2-circle"></i>
+                    </div>
+                    <h5>Review Process</h5>
+                    <p class="text-muted">Our team reviews the request for license compatibility.</p>
+                </div>
+                <div class="col-md-3 text-center mb-3 mb-md-0">
+                    <div class="display-4 text-primary mb-2">
+                        <i class="bi bi-3-circle"></i>
+                    </div>
+                    <h5>Import Book</h5>
+                    <p class="text-muted">Approved books are imported into the library.</p>
+                </div>
+                <div class="col-md-3 text-center">
+                    <div class="display-4 text-primary mb-2">
+                        <i class="bi bi-4-circle"></i>
+                    </div>
+                    <h5>Public Access</h5>
+                    <p class="text-muted">The book becomes available for everyone to read and remix.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

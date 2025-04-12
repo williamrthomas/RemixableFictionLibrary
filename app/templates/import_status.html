@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Import Request Status | Remixable Fiction Library{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="mb-4">Import Request Status</h1>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Request #{{ request.id[:8] }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Status:</div>
+                        <div class="col-md-8">
+                            {% if request.status == 'pending' %}
+                                <span class="badge bg-warning text-dark">Pending Review</span>
+                            {% elif request.status == 'approved' %}
+                                <span class="badge bg-success">Approved</span>
+                            {% elif request.status == 'rejected' %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% elif request.status == 'imported' %}
+                                <span class="badge bg-primary">Imported</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ request.status }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Submitted:</div>
+                        <div class="col-md-8">{{ request.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Book Title:</div>
+                        <div class="col-md-8">{{ request.title }}</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Author:</div>
+                        <div class="col-md-8">{{ request.author }}</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Source:</div>
+                        <div class="col-md-8">
+                            {% if request.source == 'standard_ebooks' %}
+                                Standard Ebooks
+                            {% elif request.source == 'project_gutenberg' %}
+                                Project Gutenberg
+                            {% elif request.source == 'internet_archive' %}
+                                Internet Archive
+                            {% elif request.source == 'wikisource' %}
+                                Wikisource
+                            {% else %}
+                                {{ request.source }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Identifier:</div>
+                        <div class="col-md-8">{{ request.identifier }}</div>
+                    </div>
+                    
+                    {% if request.notes %}
+                        <div class="row mb-3">
+                            <div class="col-md-4 fw-bold">Notes:</div>
+                            <div class="col-md-8">{{ request.notes }}</div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if request.status == 'imported' and request.book_id %}
+                        <div class="alert alert-success">
+                            <h5 class="alert-heading">Book Imported!</h5>
+                            <p>This book has been successfully imported into the library.</p>
+                            <div class="d-grid">
+                                <a href="{{ url_for('main.book_detail', book_id=request.book_id) }}" class="btn btn-success">View Book</a>
+                            </div>
+                        </div>
+                    {% elif request.status == 'rejected' and request.rejection_reason %}
+                        <div class="alert alert-danger">
+                            <h5 class="alert-heading">Request Rejected</h5>
+                            <p>Reason: {{ request.rejection_reason }}</p>
+                        </div>
+                    {% elif request.status == 'pending' %}
+                        <div class="alert alert-info">
+                            <h5 class="alert-heading">Request Under Review</h5>
+                            <p>Your request is currently being reviewed by our team. This process typically takes 1-3 days.</p>
+                            <p class="mb-0">You can bookmark this page to check back on the status later.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="mt-4 d-flex gap-2">
+                <a href="{{ url_for('main.import_list') }}" class="btn btn-outline-secondary">View All Requests</a>
+                <a href="{{ url_for('main.import_request') }}" class="btn btn-outline-primary">Submit Another Request</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

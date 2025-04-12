@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Sources | Remixable Fiction Library{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Our Sources</h1>
+    
+    <p class="lead">The Remixable Fiction Library curates content from several trusted sources of freely available literature. Each source has different strengths, licensing approaches, and verification requirements.</p>
+    
+    <div class="row mt-5">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h4 mb-0">Standard Ebooks</h2>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Primary Source</h5>
+                    <p class="card-text">Standard Ebooks is a volunteer-driven project that produces high-quality, fully featured, and accessible ebook editions of works in the public domain.</p>
+                    
+                    <h6>Why We Love It:</h6>
+                    <ul>
+                        <li>High-quality, professionally formatted ebooks</li>
+                        <li>Modern typography and spelling</li>
+                        <li>Semantic tagging and accessibility features</li>
+                        <li>Beautiful covers using public domain fine art</li>
+                        <li><strong>CC0 license</strong> for all editorial enhancements</li>
+                    </ul>
+                    
+                    <h6>License Approach:</h6>
+                    <p>Standard Ebooks builds its collection from US public domain texts and dedicates all of its own editorial work to the public domain worldwide using the Creative Commons CC0 Public Domain Dedication.</p>
+                    
+                    <h6>Verification Process:</h6>
+                    <p>Works from Standard Ebooks are automatically verified as remixable due to their clear CC0 licensing policy.</p>
+                    
+                    <div class="text-center mt-3">
+                        <a href="https://standardebooks.org" class="btn btn-primary" target="_blank">Visit Standard Ebooks</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h2 class="h4 mb-0">Project Gutenberg</h2>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Secondary Source</h5>
+                    <p class="card-text">Project Gutenberg is the oldest digital library, offering over 75,000 free ebooks, primarily focused on older works for which US copyright has expired.</p>
+                    
+                    <h6>Key Features:</h6>
+                    <ul>
+                        <li>Vast collection of classic literature</li>
+                        <li>Multiple formats (EPUB, Kindle, HTML, plain text)</li>
+                        <li>Works published before 1929 (US public domain)</li>
+                        <li>No registration required for downloads</li>
+                    </ul>
+                    
+                    <h6>License Approach:</h6>
+                    <p>Project Gutenberg distributes works under the Project Gutenberg License. For US public domain works, this allows free use and remixing, but requires removal of Project Gutenberg branding for commercial use or large-scale redistribution.</p>
+                    
+                    <h6>Verification Process:</h6>
+                    <p>Works from Project Gutenberg are verified as US public domain, but we remove PG branding to comply with their trademark policy when including them in our library.</p>
+                    
+                    <div class="text-center mt-3">
+                        <a href="https://www.gutenberg.org" class="btn btn-secondary" target="_blank">Visit Project Gutenberg</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-warning text-dark">
+                    <h2 class="h4 mb-0">Internet Archive</h2>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Tertiary Source (With Verification)</h5>
+                    <p class="card-text">The Internet Archive is a massive digital library containing millions of books, movies, software, music, and websites.</p>
+                    
+                    <h6>Considerations:</h6>
+                    <ul>
+                        <li>Enormous collection with varying copyright statuses</li>
+                        <li>Contains both public domain and in-copyright works</li>
+                        <li>User-applied licenses may not always be accurate</li>
+                        <li>Requires careful verification for each item</li>
+                    </ul>
+                    
+                    <h6>License Approach:</h6>
+                    <p>The Internet Archive hosts a wide spectrum of content with different licenses. We only include works that we can verify as being in the US public domain or under appropriate Creative Commons licenses.</p>
+                    
+                    <h6>Verification Process:</h6>
+                    <p>We apply a rigorous verification process for Internet Archive content, focusing on publication dates (pre-1929), explicit CC licenses from legitimate rights holders, and cross-referencing with other trusted sources.</p>
+                    
+                    <div class="text-center mt-3">
+                        <a href="https://archive.org" class="btn btn-warning" target="_blank">Visit Internet Archive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="h4 mb-0">Wikisource</h2>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Collaborative Source (CC BY-SA)</h5>
+                    <p class="card-text">Wikisource is a Wikimedia Foundation project dedicated to creating a free library of source texts through collaborative editing.</p>
+                    
+                    <h6>Key Features:</h6>
+                    <ul>
+                        <li>Collaborative, wiki-based editing</li>
+                        <li>Mix of public domain works and CC BY-SA content</li>
+                        <li>Community-verified transcriptions</li>
+                        <li>Structured, categorized content</li>
+                    </ul>
+                    
+                    <h6>License Approach:</h6>
+                    <p>Wikisource content is typically available under the CC BY-SA license, which allows remixing but requires that derivatives also use the same ShareAlike license.</p>
+                    
+                    <h6>Verification Process:</h6>
+                    <p>We verify that Wikisource content is either properly transcribed from public domain works or legitimately licensed under CC BY-SA by the contributors.</p>
+                    
+                    <div class="text-center mt-3">
+                        <a href="https://en.wikisource.org" class="btn btn-danger" target="_blank">Visit Wikisource</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mt-4 mb-5">
+        <div class="card-header">
+            <h2 class="h4 mb-0">Our Prioritization Strategy</h2>
+        </div>
+        <div class="card-body">
+            <p>We use a tiered approach to sourcing content for our library:</p>
+            
+            <ol>
+                <li><strong>Primary Source: Standard Ebooks</strong> - Highest quality and clearest licensing</li>
+                <li><strong>Secondary Source: Project Gutenberg</strong> - Vast selection of classic literature</li>
+                <li><strong>Tertiary Sources: Internet Archive and Wikisource</strong> - Used with careful verification</li>
+            </ol>
+            
+            <p>This approach ensures that we maintain a high-quality collection with clear licensing while still offering a diverse range of content.</p>
+            
+            <h5 class="mt-4">Cross-Verification</h5>
+            <p>We also use cross-referencing between sources to strengthen our verification process. For example, if a work on the Internet Archive has been used as a source by LibriVox (which only records public domain texts), this adds confidence to its public domain status.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

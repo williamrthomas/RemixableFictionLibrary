@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Import from Standard Ebooks | Remixable Fiction Library{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="mb-4">Import from Standard Ebooks</h1>
+            
+            <div class="alert alert-info">
+                <h5 class="alert-heading">Admin Import Tool</h5>
+                <p>This is an administrative tool for directly importing books from Standard Ebooks. All Standard Ebooks content is in the public domain with CC0 licensing for editorial enhancements.</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Standard Ebooks Import Form</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('main.import_standard_ebooks') }}">
+                        <div class="mb-3">
+                            <label for="url_identifier" class="form-label">Standard Ebooks URL Identifier</label>
+                            <input type="text" class="form-control" id="url_identifier" name="url_identifier" required>
+                            <div class="form-text">
+                                Enter the URL path identifier from Standard Ebooks, e.g., "jane-austen/pride-and-prejudice"
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Import Book</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">How to Find the URL Identifier</h3>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li>Visit <a href="https://standardebooks.org/ebooks" target="_blank">Standard Ebooks</a></li>
+                        <li>Find the book you want to import</li>
+                        <li>Click on the book to go to its detail page</li>
+                        <li>Look at the URL in your browser's address bar</li>
+                        <li>The URL will look like: <code>https://standardebooks.org/ebooks/jane-austen/pride-and-prejudice</code></li>
+                        <li>The part after "/ebooks/" is the URL identifier: <code>jane-austen/pride-and-prejudice</code></li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="mt-4 d-flex gap-2">
+                <a href="{{ url_for('main.import_page') }}" class="btn btn-outline-secondary">Back to Import Options</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

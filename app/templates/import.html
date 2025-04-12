@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Import Books | Remixable Fiction Library{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Import Books</h1>
+    
+    <div class="alert alert-info mb-4">
+        <h5 class="alert-heading">Open Import System</h5>
+        <p>Our library grows through community contributions. Anyone can request books to be added to our collection.</p>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Request a Book Import</h3>
+                </div>
+                <div class="card-body">
+                    <p>Anyone can request a book to be added to our library. Our team will review your request and import the book if it meets our criteria.</p>
+                    
+                    <h5 class="mt-4">How It Works:</h5>
+                    <ol>
+                        <li>Submit a request with book details</li>
+                        <li>Our team reviews the license compatibility</li>
+                        <li>If approved, the book is imported into the library</li>
+                        <li>You can track the status of your request</li>
+                    </ol>
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="{{ url_for('main.import_request') }}" class="btn btn-primary">Submit Import Request</a>
+                        <a href="{{ url_for('main.import_list') }}" class="btn btn-outline-primary">View All Requests</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% if is_authenticated %}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h3 class="mb-0">Admin Import Tools</h3>
+                </div>
+                <div class="card-body">
+                    <p>As an administrator, you have access to direct import tools for adding books to the library.</p>
+                    
+                    <h5 class="mt-4">Available Import Sources:</h5>
+                    <div class="list-group mt-3">
+                        <a href="{{ url_for('main.import_standard_ebooks') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Standard Ebooks
+                            <span class="badge bg-primary rounded-pill">CC0</span>
+                        </a>
+                        <a href="{{ url_for('main.import_project_gutenberg') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Project Gutenberg
+                            <span class="badge bg-primary rounded-pill">PD-US</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="card mt-3">
+        <div class="card-header">
+            <h3 class="mb-0">Supported Sources</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <h5><i class="bi bi-star-fill text-warning me-2"></i> Standard Ebooks</h5>
+                    <p>High-quality, professionally formatted ebooks with CC0 licensing for all editorial enhancements.</p>
+                    <a href="https://standardebooks.org" class="btn btn-sm btn-outline-primary" target="_blank">Visit Standard Ebooks</a>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <h5><i class="bi bi-book-fill text-success me-2"></i> Project Gutenberg</h5>
+                    <p>The oldest digital library with over 75,000 free ebooks, primarily focused on older works in the US public domain.</p>
+                    <a href="https://www.gutenberg.org" class="btn btn-sm btn-outline-primary" target="_blank">Visit Project Gutenberg</a>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <h5><i class="bi bi-archive-fill text-danger me-2"></i> Internet Archive</h5>
+                    <p>A massive digital library containing millions of books, with varying copyright statuses requiring careful verification.</p>
+                    <a href="https://archive.org" class="btn btn-sm btn-outline-primary" target="_blank">Visit Internet Archive</a>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <h5><i class="bi bi-globe text-info me-2"></i> Wikisource</h5>
+                    <p>A Wikimedia Foundation project dedicated to creating a free library of source texts through collaborative editing.</p>
+                    <a href="https://en.wikisource.org" class="btn btn-sm btn-outline-primary" target="_blank">Visit Wikisource</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
